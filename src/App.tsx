@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+
 import logo from './logo.svg';
 import './App.css';
 
@@ -7,19 +7,13 @@ function App() {
         video: true,
         torch: true
     };
-    //@ts-ignore
-    navigator.permissions.query({name: 'camera'})
-        .then(permissionStatus => {
-            if (permissionStatus.state === 'granted') {
-                navigator.mediaDevices.getUserMedia(constraints)
-                    .then((stream) => {
-                        console.log(stream);
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    })
-            }
-        });
+    navigator.mediaDevices.getUserMedia(constraints)
+        .then((stream) => {
+            console.log(stream);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
   return (
     <div className="App">
       <header className="App-header">
