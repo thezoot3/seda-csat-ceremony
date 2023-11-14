@@ -4,12 +4,15 @@ import './App.css';
 
 function App() {
     const constraints = {
-        video: true,
-        torch: true
+        video: true
     };
     navigator.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
-            console.log(stream);
+            const track = stream.getVideoTracks()[0];
+            track.applyConstraints({
+                //@ts-ignore
+                advanced: [{torch: true}]
+            }).then(r => console.log(r));
         })
         .catch((err) => {
             console.log(err);
