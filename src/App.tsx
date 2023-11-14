@@ -8,6 +8,7 @@ const FlashlightController = () => {
       const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
       const track = stream.getVideoTracks()[0];
       await track.applyConstraints({
+        //@ts-ignore
         advanced: [{ torch: !isFlashlightOn }]
       });
       setIsFlashlightOn(!isFlashlightOn);
