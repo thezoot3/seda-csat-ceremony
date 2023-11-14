@@ -1,58 +1,28 @@
+import React, { useState } from 'react';
 
-import logo from './logo.svg';
-import './App.css';
+const FlashlightController = () => {
+  const [isFlashlightOn, setIsFlashlightOn] = useState(false);
 
-function App() {
-    // 플래시 켜기
-function turnOnFlashlight() {
-  navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-    .then(function(stream) {
+  const toggleFlashlight = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
       const track = stream.getVideoTracks()[0];
-      const imageCapture = new ImageCapture(track);
-      const photoCapabilities = imageCapture.getPhotoCapabilities().then(() => {
-        track.applyConstraints({
-          advanced: [{ torch: true }]
-        });
+      await track.applyConstraints({
+        advanced: [{ torch: !isFlashlightOn }]
       });
-    })
-    .catch(function(err) {
-      console.log('Error: ', err);
-    });
-}
+      setIsFlashlightOn(!isFlashlightOn);
+    } catch (error) {
+      console.error('Error accessing camera or controlling flashlight:', error);
+    }
+  };
 
-// 플래시 끄기
-function turnOffFlashlight() {
-  navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-    .then(function(stream) {
-      const track = stream.getVideoTracks()[0];
-      track.applyConstraints({
-        advanced: [{ torch: false }]
-      });
-    })
-    .catch(function(err) {
-      console.log('Error: ', err);
-    });
-}
   return (
-    <div className="App">
-        <button onClick={turnOnFlashlight}>키기</button>
-        <button onClick={turnOffFlashlight}>끄기</button>
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo"/>
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <button onClick={toggleFlashlight}>
+        {isFlashlightOn ? 'Turn Off Flashlight' : 'Turn On Flashlight'}
+      </button>
     </div>
   );
-}
+};
 
-export default App;
+export default FlashlightController;
