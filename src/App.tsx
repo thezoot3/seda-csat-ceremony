@@ -3,20 +3,10 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
-    const constraints = {
-        video: true
-    };
-    navigator.mediaDevices.getUserMedia(constraints)
-        .then((stream) => {
-            const track = stream.getVideoTracks()[0];
-            track.applyConstraints({
-                //@ts-ignore
-                advanced: [{torch: true}]
-            }).then(r => console.log(r));
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+    const element = document.documentElement; // 전체 화면으로 보여줄 요소 선택
+    if (element.requestFullscreen) {
+        element.requestFullscreen().then(r => console.log); // 전체 화면 진입 요청
+    }
   return (
     <div className="App">
       <header className="App-header">
